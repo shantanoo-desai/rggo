@@ -43,3 +43,20 @@ Generating file:
 ```bash
 go test -bench . -benchtime 10x -memprofile mem00.pprof
 ```
+
+```bash
+go tool pprof -alloc_space mem00.pprof
+```
+
+## Tracing
+
+Generating file:
+
+```bash
+go test -bench . -benchtime 10x -trace trace01.out
+```
+
+```bash
+go tool trace trace01.out
+```
+
