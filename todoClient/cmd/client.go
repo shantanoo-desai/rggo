@@ -11,26 +11,26 @@ import (
 )
 
 var (
-	ErrConnection = errors.New("connection error")
-	ErrNotFound = errors.New("not found")
+	ErrConnection      = errors.New("connection error")
+	ErrNotFound        = errors.New("not found")
 	ErrInvalidResponse = errors.New("invalid server response")
-	ErrInvalid = errors.New("invalid data")
-	ErrNotNumber = errors.New("not a number")
+	ErrInvalid         = errors.New("invalid data")
+	ErrNotNumber       = errors.New("not a number")
 )
 
 const timeFormat = "Jan/02 @15:04"
 
 type item struct {
-	Task	string
-	Done	bool
-	CreatedAt	time.Time
-	CompletedAt	time.Time
+	Task        string
+	Done        bool
+	CreatedAt   time.Time
+	CompletedAt time.Time
 }
 
 type response struct {
-	Results	[]item	`json:"results"`
-	Date	int		`json:"date"`
-	TotalResults int `json:"total_results"`
+	Results      []item `json:"results"`
+	Date         int    `json:"date"`
+	TotalResults int    `json:"total_results"`
 }
 
 func newClient() *http.Client {
@@ -83,7 +83,6 @@ func getAll(apiRoot string) ([]item, error) {
 	return getItems(u)
 }
 
-
 func getOne(apiRoot string, id int) (item, error) {
 	u := fmt.Sprintf("%s/todo/%d", apiRoot, id)
 
@@ -118,7 +117,7 @@ func sendRequest(url, method, contentType string, expStatus int, body io.Reader)
 	defer r.Body.Close()
 
 	if r.StatusCode != expStatus {
-		msg, err := io.Readall(r.Body)
+		msg, err := io.ReadAll(r.Body)
 		if err != nil {
 			return fmt.Errorf("cannot read body: %w", err)
 		}
@@ -132,7 +131,7 @@ func sendRequest(url, method, contentType string, expStatus int, body io.Reader)
 	return nil
 }
 
-fmt addItem(apiRoot, task string) error {
+func addItem(apiRoot, task string) error {
 	u := fmt.Sprintf("%s/todo", apiRoot)
 
 	item := struct {
@@ -148,4 +147,16 @@ fmt addItem(apiRoot, task string) error {
 	}
 
 	return sendRequest(u, http.MethodPost, "application/json", http.StatusCreated, &body)
+}
+
+func completeItem(apiRoot string, id int) error {
+	u := fmt.Sprintf("%s/todo/%d?complete", apiRoot, id)
+
+	return sendRequest(u, http.MethodPatch, "", http.StatusNoContent, nil)
+}
+
+func deleteItem(apiRoot string, id int) error {
+	u := fmt.Sprintf("%s/todo/%d", apiRoot, id)
+
+	return sendRequest(u, http.MethodDelete, "", http.StatusNoContent, nil)
 }

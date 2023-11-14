@@ -33,10 +33,10 @@ import (
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
-	Use:   "add <task>",
-	Short: "add a new task to list",
+	Use:          "add <task>",
+	Short:        "add a new task to list",
 	SilenceUsage: true,
-	Args:	cobra.MinimumNArgs(1),
+	Args:         cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		apiRoot := viper.GetString("api-root")
 
@@ -59,7 +59,7 @@ func init() {
 }
 
 func addAction(out io.Writer, apiRoot string, args []string) error {
-	task := string.Join(args, " ")
+	task := strings.Join(args, " ")
 	if err := addItem(apiRoot, task); err != nil {
 		return err
 	}

@@ -5,11 +5,11 @@ import (
 	"net/http/httptest"
 )
 
-var testResp = map[string]struct{
+var testResp = map[string]struct {
 	Status int
-	Body	string
+	Body   string
 }{
-		"resultsMany": {
+	"resultsMany": {
 		Status: http.StatusOK,
 		Body: `{
 "results": [
@@ -55,11 +55,19 @@ var testResp = map[string]struct{
 	},
 	"root": {
 		Status: http.StatusOK,
-		Body: "There's an API here",
+		Body:   "There's an API here",
 	},
 	"notFound": {
 		Status: http.StatusNotFound,
-		Body: "404 - not found",
+		Body:   "404 - not found",
+	},
+	"created": {
+		Status: http.StatusCreated,
+		Body:   "",
+	},
+	"noContent": {
+		Status: http.StatusNoContent,
+		Body:   "",
 	},
 }
 
