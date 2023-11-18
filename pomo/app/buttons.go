@@ -32,7 +32,7 @@ func newButtonSet(ctx context.Context, config *pomodoro.IntervalConfig, w *widge
 			w.update([]int{}, "", "nothing running...", "", redrawCh)
 		}
 
-		periodic := func(pomodoro.Interval) {
+		periodic := func(i pomodoro.Interval) {
 			w.update(
 				[]int{int(i.ActualDuration), int(i.PlannedDuration)},
 				"", "",
